@@ -89,7 +89,7 @@ object TimeMath {
     fun eventTarget(event: CountdownEvent, now: Long, zone: ZoneId = ZoneId.systemDefault()): Long {
         if (!event.yearly) return event.at
         val at = ZonedDateTime.ofInstant(Instant.ofEpochMilli(event.at), zone)
-        val today = LocalDate.ofInstant(Instant.ofEpochMilli(now), zone)
+        val today = Instant.ofEpochMilli(now).atZone(zone).toLocalDate()
         var year = today.year
         while (true) {
             val day = at.dayOfMonth.coerceAtMost(LocalDate.of(year, at.month, 1).lengthOfMonth())
@@ -115,8 +115,8 @@ object TimeMath {
     /** Dzień w innej strefie względem lokalnego: −1 wczoraj, 0 dziś, 1 jutro. */
     fun dayShift(zone: ZoneId, now: Long, local: ZoneId = ZoneId.systemDefault()): Int {
         val i = Instant.ofEpochMilli(now)
-        val there = LocalDate.ofInstant(i, zone)
-        val here = LocalDate.ofInstant(i, local)
+        val there = i.atZone(zone).toLocalDate()
+        val here = i.atZone(local).toLocalDate()
         return there.compareTo(here).coerceIn(-1, 1)
     }
 

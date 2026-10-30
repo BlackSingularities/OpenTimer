@@ -1,8 +1,8 @@
 package com.blacksingularities.opentimer.ui
 
-import android.app.Activity
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -77,7 +77,7 @@ fun AppRoot(vm: AppViewModel, onRequestNotifications: () -> Unit) {
     val settings by Store.settings.collectAsState()
     // Odczyt języka – zmiana w ustawieniach przerysowuje całe drzewo.
     @Suppress("UNUSED_VARIABLE") val english = I18n.english
-    val activity = LocalContext.current as? Activity
+    val activity = LocalActivity.current
     DisposableEffect(settings.keepScreenOn) {
         if (settings.keepScreenOn) activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         else activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

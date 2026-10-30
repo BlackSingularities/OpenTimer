@@ -20,6 +20,8 @@ import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Campaign
 import androidx.compose.material.icons.rounded.DirectionsRun
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Language
@@ -121,6 +123,21 @@ fun SettingsScreen(vm: AppViewModel, onRequestNotifications: () -> Unit) {
                 short = { h -> when (h) { HourFormat.SYSTEM -> tr("Auto"); HourFormat.H24 -> "24"; HourFormat.H12 -> "12" } },
             ) { h -> vm.settings { it.copy(hourFormat = h) } }
             SwitchRow(Icons.Rounded.Timelapse, tr("Sekundy na zegarze"), tr("Widoczne na ekranie głównym"), s.showSeconds) { v -> vm.settings { it.copy(showSeconds = v) } }
+            SwitchRow(
+                Icons.Rounded.Home,
+                tr("Zegar domowy"),
+                if (s.homeZone.isBlank() || s.homeZone == java.time.ZoneId.systemDefault().id) {
+                    tr("W podróży pokaże godzinę w domu ({0})", com.blacksingularities.opentimer.ui.Fmt.cityOf(s.homeZone.ifBlank { java.time.ZoneId.systemDefault().id }))
+                } else {
+                    tr("Dom: {0} · teraz {1}", com.blacksingularities.opentimer.ui.Fmt.cityOf(s.homeZone), com.blacksingularities.opentimer.ui.Fmt.time(context, System.currentTimeMillis(), java.time.ZoneId.of(s.homeZone)))
+                },
+                s.homeClock,
+            ) { v -> vm.settings { it.copy(homeClock = v) } }
+            ActionRow(Icons.Rounded.Public, tr("Tu jest mój dom"), tr("Ustaw obecną strefę jako domową")) {
+                val zone = java.time.ZoneId.systemDefault().id
+                vm.settings { it.copy(homeZone = zone) }
+                vm.showSnack(tr("Dom: {0}", com.blacksingularities.opentimer.ui.Fmt.cityOf(zone)))
+            }
             SwitchRow(Icons.Rounded.CalendarMonth, tr("Tydzień od poniedziałku"), tr("Kolejność dni przy budzikach"), s.weekStartsMonday) { v -> vm.settings { it.copy(weekStartsMonday = v) } }
             Chips(
                 Icons.Rounded.OpenInFull,

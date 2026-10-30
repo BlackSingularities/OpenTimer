@@ -124,6 +124,14 @@ class TimeMathTest {
     }
 
     @Test
+    fun `rocznica 29 lutego w zwyklym roku wypada 28 lutego`() {
+        val event = CountdownEvent(id = 1, title = "Luty", at = at("2024-02-29T08:00:00"), yearly = true)
+        val target = TimeMath.eventTarget(event, at("2026-01-01T00:00:00"), zone)
+        val date = java.time.Instant.ofEpochMilli(target).atZone(zone).toLocalDate()
+        assertEquals(LocalDate.of(2026, 2, 28), date)
+    }
+
+    @Test
     fun `roznica stref i dzien w innej strefie`() {
         val tokyo = ZoneId.of("Asia/Tokyo")
         val summer = at("2026-07-01T12:00:00")

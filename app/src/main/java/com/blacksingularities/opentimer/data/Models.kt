@@ -253,6 +253,7 @@ data class AppSettings(
     val showSeconds: Boolean = true,
     val hourFormat: HourFormat = HourFormat.SYSTEM,
     val homeClock: Boolean = true,
+    val homeZone: String = "",
     val weekStartsMonday: Boolean = true,
     val haptics: Boolean = true,
     val keepScreenOn: Boolean = false,
@@ -279,7 +280,7 @@ data class AppSettings(
     fun toJson(): JSONObject = JSONObject()
         .put("language", language.name).put("startTab", startTab.name).put("lastTab", lastTab)
         .put("clockStyle", clockStyle.name).put("showSeconds", showSeconds).put("hourFormat", hourFormat.name)
-        .put("homeClock", homeClock).put("weekMonday", weekStartsMonday).put("haptics", haptics)
+        .put("homeClock", homeClock).put("homeZone", homeZone).put("weekMonday", weekStartsMonday).put("haptics", haptics)
         .put("keepScreenOn", keepScreenOn).put("defaultSnooze", defaultSnooze).put("defaultRamp", defaultRamp)
         .put("autoSilence", autoSilenceMin).put("volumeKeys", volumeKeys.name).put("flip", flipToSnooze)
         .put("preAlarm", preAlarmMin).put("timerSound", timerSound).put("timerVibrate", timerVibrate)
@@ -297,6 +298,7 @@ data class AppSettings(
             showSeconds = o.optBoolean("showSeconds", true),
             hourFormat = enumOr(o.optString("hourFormat"), HourFormat.SYSTEM),
             homeClock = o.optBoolean("homeClock", true),
+            homeZone = o.optString("homeZone"),
             weekStartsMonday = o.optBoolean("weekMonday", true),
             haptics = o.optBoolean("haptics", true),
             keepScreenOn = o.optBoolean("keepScreenOn"),

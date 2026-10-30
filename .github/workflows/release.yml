@@ -49,6 +49,9 @@ jobs:
       - name: Testy jednostkowe
         run: gradle testDebugUnitTest --stacktrace
 
+      - name: Analiza statyczna
+        run: gradle :app:lintDebug --stacktrace
+
       - name: Budowanie APK
         env:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}

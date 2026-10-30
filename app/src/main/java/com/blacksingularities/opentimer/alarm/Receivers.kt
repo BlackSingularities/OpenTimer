@@ -83,6 +83,7 @@ class ActionReceiver : BroadcastReceiver() {
 /** Po restarcie, zmianie czasu lub strefy – harmonogram ustawiany od nowa. */
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action !in KNOWN) return
         ready(context)
         Notifications.createChannels(context)
         // Minutnik, który skończył się, gdy telefon był wyłączony, dzwoni od razu.
@@ -93,5 +94,15 @@ class BootReceiver : BroadcastReceiver() {
             overdue.forEach { Actions.onTimerFired(context, it.id) }
             RingService.ringTimers(context)
         }
+    }
+
+    private companion object {
+        val KNOWN = setOf(
+            Intent.ACTION_BOOT_COMPLETED,
+            Intent.ACTION_LOCKED_BOOT_COMPLETED,
+            Intent.ACTION_TIME_CHANGED,
+            Intent.ACTION_TIMEZONE_CHANGED,
+            "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED",
+        )
     }
 }

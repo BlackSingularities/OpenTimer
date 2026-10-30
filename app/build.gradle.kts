@@ -61,8 +61,10 @@ android {
         buildConfig = true
     }
     lint {
-        abortOnError = false
+        // Lint wyłapuje m.in. wywołania metod nowszych niż minSdk, czego testy na JVM nie widzą.
+        abortOnError = true
         checkReleaseBuilds = false
+        warningsAsErrors = false
     }
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"

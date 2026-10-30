@@ -55,6 +55,10 @@ object Store {
             _stopwatch.value = readObject("stopwatch")?.let(Stopwatch::fromJson) ?: Stopwatch()
             _pomodoro.value = readObject("pomodoro")?.let(Pomodoro::fromJson) ?: Pomodoro()
             _settings.value = readObject("settings")?.let(AppSettings::fromJson) ?: AppSettings()
+            // Strefa domowa to ta, w ktorej aplikacja zostala pierwszy raz uruchomiona.
+            if (_settings.value.homeZone.isBlank()) {
+                updateSettingsLocked { it.copy(homeZone = java.time.ZoneId.systemDefault().id) }
+            }
         }
     }
 
@@ -121,10 +125,14 @@ object Store {
     }
 
     fun updateSettings(change: (AppSettings) -> AppSettings): AppSettings = synchronized(lock) {
+        updateSettingsLocked(change)
+    }
+
+    private fun updateSettingsLocked(change: (AppSettings) -> AppSettings): AppSettings {
         val next = change(_settings.value)
         _settings.value = next
         prefs.edit().putString("settings", next.toJson().toString()).apply()
-        next
+        return next
     }
 
     /** Kolejny wolny identyfikator (wspólny licznik dla budzików, minutników i wydarzeń). */

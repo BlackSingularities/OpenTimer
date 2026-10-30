@@ -30,6 +30,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Alarm
 import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Watch
@@ -126,6 +127,29 @@ fun ClockTab(vm: AppViewModel) {
                         Spacer(Modifier.width(6.dp))
                         Text("${Fmt.dayAndTime(context, next.second)} · ${Fmt.until(next.second - now)}", fontSize = 13.sp)
                     }
+                }
+            }
+        }
+        // W podróży: zegar strefy, w której aplikacja została uruchomiona pierwszy raz.
+        val home = settings.homeZone
+            .takeIf { settings.homeClock && it.isNotBlank() && it != localZone.id }
+            ?.let { id -> runCatching { ZoneId.of(id) }.getOrNull() }
+            ?.takeIf { TimeMath.zoneOffsetMinutes(it, now) != 0 }
+        if (home != null) item {
+            Tile(padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(38.dp).clip(RoundedCornerShape(50)).background(Color.White.copy(alpha = 0.1f)), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.Home, null, tint = Color.White, modifier = Modifier.size(19.dp))
+                    }
+                    Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
+                        Text(tr("Zegar domowy"), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(
+                            "${Fmt.cityOf(home.id)} · ${Fmt.offset(TimeMath.zoneOffsetMinutes(home, now))}",
+                            fontSize = 12.sp,
+                            color = Palette.TextDim,
+                        )
+                    }
+                    Text(Fmt.time(context, now, home), fontSize = 26.sp, fontWeight = FontWeight.Light)
                 }
             }
         }

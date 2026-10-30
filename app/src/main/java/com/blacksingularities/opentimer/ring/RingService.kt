@@ -102,6 +102,8 @@ class RingService : Service(), SensorEventListener {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
         val alarm = st.alarm
+        // Minutnik budzi ekran tylko wtedy, gdy użytkownik tego chce; budzik zawsze.
+        val fullScreen = alarm != null || Store.settings.value.timerFullScreen
         val title = if (alarm != null) alarm.label.ifBlank { tr("Budzik") } else tr("Czas minął")
         val text = if (alarm != null) Fmt.alarmTime(this, alarm)
         else st.timers.joinToString(", ") { it.label.ifBlank { Fmt.durationShort(it.durationMs) } }
@@ -111,9 +113,9 @@ class RingService : Service(), SensorEventListener {
             .setContentText(text)
             .setCategory(Notification.CATEGORY_ALARM)
             .setOngoing(true)
-            .setFullScreenIntent(full, true)
             .setContentIntent(full)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
+        if (fullScreen) b.setFullScreenIntent(full, true)
         if (alarm != null) {
             b.addAction(action(tr("Drzemka"), ACTION_SNOOZE, 1))
             if (alarm.challenge == com.blacksingularities.opentimer.data.Challenge.NONE) b.addAction(action(tr("Wyłącz"), ACTION_DISMISS, 2))
@@ -127,7 +129,7 @@ class RingService : Service(), SensorEventListener {
             startForeground(Notifications.ID_RING, b.build())
         }
         // Gdy ekran jest włączony, system pokazuje tylko dymek – próbujemy otworzyć ekran dzwonienia.
-        runCatching { startActivity(Intent(this, RingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        if (fullScreen) runCatching { startActivity(Intent(this, RingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
     }
 
     private fun action(title: String, action: String, code: Int): Notification.Action {

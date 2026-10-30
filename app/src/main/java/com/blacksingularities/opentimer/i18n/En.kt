@@ -406,4 +406,10 @@ val En: Map<String, String> = mapOf(
     "kod {0}" to "code {0}",
     "Aktualizacja nieudana: {0}" to "Update failed: {0}",
     "Wydanie nie zawiera pliku {0}" to "The release has no {0} file",
+    "Zegar domowy" to "Home clock",
+    "W podróży pokaże godzinę w domu ({0})" to "On a trip it shows the time back home ({0})",
+    "Dom: {0} · teraz {1}" to "Home: {0} · now {1}",
+    "Tu jest mój dom" to "This is my home",
+    "Ustaw obecną strefę jako domową" to "Make the current zone the home one",
+    "Dom: {0}" to "Home: {0}",
 )

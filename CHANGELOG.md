@@ -1,5 +1,10 @@
 # Historia zmian
 
+## 1.0.3
+
+- Poprawka: przywrócone ciemne tło interfejsu – jasne tło z 1.0.2 sprawiało, że biały tekst był nieczytelny.
+- Ekran uruchamiania z logo na ciemnym tle.
+
 ## 1.0.2
 
 - Nowa profesjonalna ikona aplikacji i dopasowane kolorystycznie jasne tło.

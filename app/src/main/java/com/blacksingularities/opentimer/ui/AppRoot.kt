@@ -89,7 +89,7 @@ fun AppRoot(vm: AppViewModel, onRequestNotifications: () -> Unit) {
     }
 
     GlassScope(haptics = settings.haptics) {
-        Column(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize().background(Palette.Ink)) {
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 AnimatedContent(
                     targetState = vm.tab,

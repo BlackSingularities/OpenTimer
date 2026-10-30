@@ -57,7 +57,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-        run: gradle :app:assembleRelease -PversionCode=${{ steps.ver.outputs.code }} -PversionName=${{ steps.ver.outputs.name }} --stacktrace
+        run: gradle :app:assembleRelease -PrequireSigning=true -PversionCode=${{ steps.ver.outputs.code }} -PversionName=${{ steps.ver.outputs.name }} --stacktrace
 
       - name: Przygotowanie pliku
         run: cp app/build/outputs/apk/release/app-release.apk "OpenTimer-${{ steps.ver.outputs.name }}.apk"

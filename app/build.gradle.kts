@@ -10,6 +10,14 @@ val appVersionCode = (project.findProperty("versionCode") as String?)?.toIntOrNu
 val appVersionName = (project.findProperty("versionName") as String?) ?: "0.1.0-dev"
 val keystorePath: String? = System.getenv("SIGNING_KEYSTORE_PATH")
 
+// Wydanie musi być podpisane trwałym kluczem. Bez niego Gradle używa klucza debug, a ten na
+// maszynie CI powstaje od nowa przy każdym uruchomieniu – kolejne wydania miałyby inny podpis
+// i telefon odrzuciłby aktualizację (INSTALL_FAILED_UPDATE_INCOMPATIBLE).
+val requireSigning = project.findProperty("requireSigning") == "true"
+if (requireSigning && (keystorePath == null || !file(keystorePath).exists())) {
+    error("Brak klucza podpisu: ustaw SIGNING_KEYSTORE_PATH (sekret SIGNING_KEYSTORE_BASE64).")
+}
+
 android {
     namespace = "com.blacksingularities.opentimer"
     compileSdk = 36

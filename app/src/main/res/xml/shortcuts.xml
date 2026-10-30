@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="alarm" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_alarm" android:shortcutShortLabel="@string/shortcut_alarm">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.blacksingularities.opentimer"
+            android:targetClass="com.blacksingularities.opentimer.MainActivity">
+            <extra android:name="open" android:value="new_alarm" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="timer" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_timer" android:shortcutShortLabel="@string/shortcut_timer">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.blacksingularities.opentimer"
+            android:targetClass="com.blacksingularities.opentimer.MainActivity">
+            <extra android:name="open" android:value="timer" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="stopwatch" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_stopwatch" android:shortcutShortLabel="@string/shortcut_stopwatch">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.blacksingularities.opentimer"
+            android:targetClass="com.blacksingularities.opentimer.MainActivity">
+            <extra android:name="open" android:value="stopwatch" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="night" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_night" android:shortcutShortLabel="@string/shortcut_night">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.blacksingularities.opentimer"
+            android:targetClass="com.blacksingularities.opentimer.MainActivity">
+            <extra android:name="open" android:value="night" />
+        </intent>
+    </shortcut>
+</shortcuts>

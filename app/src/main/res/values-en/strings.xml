@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_clock">OpenTimer clock</string>
+    <string name="widget_clock_desc">Time, date and the next alarm</string>
+    <string name="shortcut_alarm">New alarm</string>
+    <string name="shortcut_timer">Timer</string>
+    <string name="shortcut_stopwatch">Stopwatch</string>
+    <string name="shortcut_night">Night clock</string>
+</resources>

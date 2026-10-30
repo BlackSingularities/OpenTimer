@@ -1,5 +1,10 @@
 # Historia zmian
 
+## 1.0.2
+
+- Nowa profesjonalna ikona aplikacji i dopasowane kolorystycznie jasne tło.
+- Spójne ikony adaptacyjne, monochromatyczne i ekran uruchamiania.
+
 ## 1.0.1
 
 - Poprawka: na Androidzie od 10 do 13 zegary świata i odliczanie do wydarzeń wywoływały metodę

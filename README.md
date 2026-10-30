@@ -1,5 +1,7 @@
 # OpenTimer
 
+<img src="artwork/app-icon.png" alt="OpenTimer" width="128" />
+
 Zegar, budzik, stoper, minutnik i narzędzia czasu w jednej aplikacji na Androida. Czarny interfejs
 AMOLED, bez reklam, bez śledzenia i bez konta – wszystko działa w telefonie.
 

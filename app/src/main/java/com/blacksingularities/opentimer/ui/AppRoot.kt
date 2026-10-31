@@ -1,5 +1,9 @@
 package com.blacksingularities.opentimer.ui
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.animation.animateColorAsState
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
@@ -66,7 +70,6 @@ import com.blacksingularities.opentimer.ui.screens.StopwatchTab
 import com.blacksingularities.opentimer.ui.screens.TimersTab
 import com.blacksingularities.opentimer.ui.screens.ZonePickerScreen
 import com.blacksingularities.opentimer.ui.theme.BlockShape
-import com.blacksingularities.opentimer.ui.theme.DockBar
 import com.blacksingularities.opentimer.ui.theme.GlassScope
 import com.blacksingularities.opentimer.ui.theme.Palette
 import com.blacksingularities.opentimer.ui.theme.glass
@@ -105,7 +108,11 @@ fun AppRoot(vm: AppViewModel, onRequestNotifications: () -> Unit) {
                     }
                 }
             }
-            DockBar(vertical = false, modifier = Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.navigationBars)) {
+            Row(
+                Modifier.fillMaxWidth().background(Palette.Ink).windowInsetsPadding(WindowInsets.navigationBars)
+                    .padding(horizontal = 6.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 TabButton(Icons.Rounded.Schedule, tr("Zegar"), vm.tab == Tab.CLOCK) { vm.select(Tab.CLOCK) }
                 TabButton(Icons.Rounded.Alarm, tr("Budzik"), vm.tab == Tab.ALARMS) { vm.select(Tab.ALARMS) }
                 TabButton(Icons.Rounded.Timer, tr("Stoper"), vm.tab == Tab.STOPWATCH) { vm.select(Tab.STOPWATCH) }
@@ -171,17 +178,28 @@ fun AppRoot(vm: AppViewModel, onRequestNotifications: () -> Unit) {
 }
 
 @Composable
-private fun TabButton(icon: ImageVector, label: String, selected: Boolean, onClick: () -> Unit) {
-    // Zaznaczona zakładka: biały kwadrat z ciemną ikoną i podpisem.
-    val content = if (selected) Palette.Ink else Color.White
+private fun RowScope.TabButton(icon: ImageVector, label: String, selected: Boolean, onClick: () -> Unit) {
+    // Styl wspólny dla aplikacji Open: wybrana zakładka to biały kafel z czarną ikoną i podpisem.
+    val bg by animateColorAsState(if (selected) Color.White else Color.Transparent, label = "tabBg")
+    val tint by animateColorAsState(if (selected) Color.Black else Palette.TextDim, label = "tabTint")
     Column(
-        Modifier.reactive(label, onClick = onClick).clip(RoundedCornerShape(12.dp))
-            .background(if (selected) Color.White else Color.Transparent)
-            .padding(horizontal = 12.dp, vertical = 6.dp),
+        Modifier
+            .weight(1f)
+            .clip(RoundedCornerShape(6.dp))
+            .background(bg)
+            .reactive(label, onClick = onClick)
+            .padding(top = 7.dp, bottom = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
-        Icon(icon, null, tint = content, modifier = Modifier.size(22.dp))
-        Text(label, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, color = if (selected) content else Palette.TextDim)
+        Icon(icon, null, tint = tint, modifier = Modifier.size(21.dp))
+        Spacer(Modifier.height(3.dp))
+        Text(
+            label,
+            color = tint,
+            fontSize = 10.sp,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            maxLines = 1,
+            softWrap = false,
+        )
     }
 }

@@ -108,14 +108,14 @@ fun AlarmsTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
 
     LazyColumn(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         item {
             TabHeader(
                 if (next != null) tr("Najbliższy {0} · {1}", Fmt.dayAndTime(context, next.second), Fmt.until(next.second - now)) else tr("Brak włączonych budzików"),
             ) {
-                RoundIcon(Icons.Rounded.Add, tr("Nowy budzik")) { vm.open(Route.AlarmEditor(null)) }
+                RoundIcon(Icons.Rounded.Add, tr("Nowy budzik"), size = 38.dp) { vm.open(Route.AlarmEditor(null)) }
             }
         }
         if (!notifOk || !canExact || !fullScreenOk) item {

@@ -1,5 +1,10 @@
 # Historia zmian
 
+## 1.0.5
+
+- Nagłówki zakładek Zegar i Budzik mają ten sam rozmiar i odstęp co pozostałe zakładki.
+- Dolny pasek: zaznaczona zakładka to biały kwadrat z ikoną i podpisem.
+
 ## 1.0.4
 
 - Płynne przewijanie list w zakładkach Zegar, Stoper i Minutnik – tyknięcie zegara nie przerysowuje już całej listy, więc szybkie przeciągnięcie znów leci z bezwładnością.

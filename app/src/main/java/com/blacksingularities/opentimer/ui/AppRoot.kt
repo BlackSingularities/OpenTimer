@@ -172,17 +172,16 @@ fun AppRoot(vm: AppViewModel, onRequestNotifications: () -> Unit) {
 
 @Composable
 private fun TabButton(icon: ImageVector, label: String, selected: Boolean, onClick: () -> Unit) {
+    // Zaznaczona zakładka: biały kwadrat z ciemną ikoną i podpisem.
+    val content = if (selected) Palette.Ink else Color.White
     Column(
-        Modifier.reactive(label, onClick = onClick).padding(horizontal = 6.dp, vertical = 6.dp),
+        Modifier.reactive(label, onClick = onClick).clip(RoundedCornerShape(12.dp))
+            .background(if (selected) Color.White else Color.Transparent)
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
-        Box(
-            Modifier.clip(BlockShape).background(if (selected) Color.White else Color.Transparent).padding(horizontal = 16.dp, vertical = 5.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(icon, null, tint = if (selected) Palette.Ink else Color.White, modifier = Modifier.size(22.dp))
-        }
-        Text(label, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, color = if (selected) Color.White else Palette.TextDim)
+        Icon(icon, null, tint = content, modifier = Modifier.size(22.dp))
+        Text(label, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, color = if (selected) content else Palette.TextDim)
     }
 }

@@ -90,14 +90,14 @@ fun ClockTab(vm: AppViewModel) {
 
     LazyColumn(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item {
             val now = rememberNow(60_000L)
             TabHeader(Fmt.zoneName(localZone.id, now)) {
-                RoundIcon(Icons.Rounded.Bedtime, tr("Zegar nocny")) { vm.open(Route.NightClock) }
-                RoundIcon(Icons.Rounded.Settings, tr("Ustawienia"), badge = if (vm.updatePending) "1" else null) { vm.open(Route.Settings) }
+                RoundIcon(Icons.Rounded.Bedtime, tr("Zegar nocny"), size = 38.dp) { vm.open(Route.NightClock) }
+                RoundIcon(Icons.Rounded.Settings, tr("Ustawienia"), size = 38.dp, badge = if (vm.updatePending) "1" else null) { vm.open(Route.Settings) }
             }
         }
         item { UpdateBanner(vm) }

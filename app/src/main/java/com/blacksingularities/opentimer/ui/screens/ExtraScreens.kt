@@ -217,11 +217,18 @@ fun MetronomeScreen(vm: AppViewModel) {
 
     LaunchedEffect(running, bpm, meter, accent) {
         if (!running) return@LaunchedEffect
-        val period = (60_000.0 / bpm).toLong().coerceAtLeast(60L)
+        val period = 60_000.0 / bpm
+        // Terminy liczone od startu, a nie kolejnymi delay() – tempo nie „ucieka” przez opóźnienia pętli.
+        val start = System.nanoTime()
+        var n = 0L
         while (true) {
-            val first = accent && beat % meter == 0
-            tone?.startTone(if (first) ToneGenerator.TONE_PROP_BEEP2 else ToneGenerator.TONE_PROP_BEEP, if (first) 90 else 60)
-            delay(period)
+            // Akcent tylko przy metrum > 1 (przy 1/4 każda miara jest „raz” – brzmią jednakowo).
+            // Pojedyncze tony DTMF: TONE_PROP_BEEP2 to podwójny pisk, który brzmiał jak dwa uderzenia.
+            val first = accent && meter > 1 && beat == 0
+            tone?.startTone(if (first) ToneGenerator.TONE_DTMF_D else ToneGenerator.TONE_DTMF_1, 50)
+            n++
+            val wait = (start + (n * period * 1_000_000).toLong() - System.nanoTime()) / 1_000_000
+            delay(wait.coerceAtLeast(0))
             beat = (beat + 1) % meter.coerceAtLeast(1)
         }
     }

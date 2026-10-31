@@ -74,7 +74,6 @@ fun TimersTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
     val context = LocalContext.current
     val timers by Store.timers.collectAsState()
     val presets by Store.presets.collectAsState()
-    val now = rememberNow(200L)
     var digits by remember { mutableStateOf("") }
     var keypad by remember { mutableStateOf(false) }
     var rename by remember { mutableStateOf<TimerItem?>(null) }
@@ -88,7 +87,6 @@ fun TimersTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         TabHeader(
-            tr("Minutnik"),
             when {
                 timers.isEmpty() -> tr("Wpisz czas i dotknij start")
                 else -> tr("Działających: {0}", timers.count { it.running })
@@ -157,7 +155,6 @@ fun TimersTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
                 TimerCard(
                     vm = vm,
                     timer = t,
-                    now = now,
                     single = timers.size == 1 && !showKeypad,
                     onRename = { rename = t },
                 )
@@ -207,8 +204,10 @@ private fun LaunchedPermission(active: Boolean, onRequest: () -> Unit) {
 }
 
 @Composable
-private fun TimerCard(vm: AppViewModel, timer: TimerItem, now: Long, single: Boolean, onRename: () -> Unit) {
+private fun TimerCard(vm: AppViewModel, timer: TimerItem, single: Boolean, onRename: () -> Unit) {
     val context = LocalContext.current
+    // Tyknięcie wewnątrz karty – przewijana lista nie przerysowuje się co 200 ms.
+    val now = rememberNow(200L)
     val left = timer.remainingAt(now)
     val progress = timer.progressAt(now)
     Column(

@@ -240,7 +240,8 @@ data class Pomodoro(
     }
 }
 
-enum class ClockStyle { DIGITAL, ANALOG }
+enum class ClockStyle { DIGITAL, ANALOG, LCD }
+enum class StopwatchStyle { RING, ANALOG, LCD }
 enum class HourFormat { SYSTEM, H24, H12 }
 enum class VolumeKeys { NOTHING, SNOOZE, DISMISS }
 enum class StartTab { CLOCK, ALARMS, STOPWATCH, TIMERS, MORE, LAST }
@@ -268,6 +269,7 @@ data class AppSettings(
     val timerRamp: Int = 0,
     val timerFullScreen: Boolean = true,
     val stopwatchMs: Boolean = true,
+    val stopwatchStyle: StopwatchStyle = StopwatchStyle.RING,
     val intervalVoice: Boolean = true,
     val intervalBeeps: Boolean = true,
     val nightColor: Int = 0xFFFF453A.toInt(),
@@ -285,6 +287,7 @@ data class AppSettings(
         .put("autoSilence", autoSilenceMin).put("volumeKeys", volumeKeys.name).put("flip", flipToSnooze)
         .put("preAlarm", preAlarmMin).put("timerSound", timerSound).put("timerVibrate", timerVibrate)
         .put("timerRamp", timerRamp).put("timerFullScreen", timerFullScreen).put("stopwatchMs", stopwatchMs)
+        .put("stopwatchStyle", stopwatchStyle.name)
         .put("intervalVoice", intervalVoice).put("intervalBeeps", intervalBeeps).put("nightColor", nightColor)
         .put("nightDim", nightDim.toDouble()).put("nightSeconds", nightSeconds).put("autoUpdate", autoUpdate)
         .put("lastUpdateCheck", lastUpdateCheck).put("onboarded", onboarded)
@@ -313,6 +316,7 @@ data class AppSettings(
             timerRamp = o.optInt("timerRamp", 0),
             timerFullScreen = o.optBoolean("timerFullScreen", true),
             stopwatchMs = o.optBoolean("stopwatchMs", true),
+            stopwatchStyle = enumOr(o.optString("stopwatchStyle"), StopwatchStyle.RING),
             intervalVoice = o.optBoolean("intervalVoice", true),
             intervalBeeps = o.optBoolean("intervalBeeps", true),
             nightColor = o.optInt("nightColor", 0xFFFF453A.toInt()),

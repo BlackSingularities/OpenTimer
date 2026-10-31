@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.Calculate
 import androidx.compose.material.icons.rounded.Celebration
 import androidx.compose.material.icons.rounded.Coffee
@@ -27,7 +26,6 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Hotel
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.SystemUpdate
 import androidx.compose.material.icons.rounded.Timelapse
@@ -54,7 +52,6 @@ import com.blacksingularities.opentimer.i18n.tr
 import com.blacksingularities.opentimer.ui.AppViewModel
 import com.blacksingularities.opentimer.ui.Fmt
 import com.blacksingularities.opentimer.ui.Route
-import com.blacksingularities.opentimer.ui.Tab
 import com.blacksingularities.opentimer.ui.UpdateBanner
 import com.blacksingularities.opentimer.ui.components.ActionRow
 import com.blacksingularities.opentimer.ui.components.Group
@@ -86,7 +83,7 @@ fun MoreTab(vm: AppViewModel) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item {
-            TabHeader(tr("Więcej"), tr("Narzędzia czasu i ustawienia")) {
+            TabHeader(tr("Narzędzia czasu i ustawienia")) {
                 RoundIcon(Icons.Rounded.Settings, tr("Ustawienia"), size = 38.dp, badge = if (vm.updatePending) "1" else null) { vm.open(Route.Settings) }
             }
         }
@@ -99,8 +96,6 @@ fun MoreTab(vm: AppViewModel) {
                     Tool(Icons.Rounded.Celebration, tr("Odliczanie"), if (events.isEmpty()) tr("Do ważnych dni") else tr("Wydarzeń: {0}", events.size)) { vm.open(Route.Countdowns) },
                     Tool(Icons.Rounded.MusicNote, tr("Metronom"), tr("Tempo, metrum, odliczanie")) { vm.open(Route.Metronome) },
                     Tool(Icons.Rounded.Calculate, tr("Kalkulator czasu"), tr("Dodawanie godzin i różnice dat")) { vm.open(Route.Calculator) },
-                    Tool(Icons.Rounded.Bedtime, tr("Zegar nocny"), tr("Przyciemniony, w kolorze")) { vm.open(Route.NightClock) },
-                    Tool(Icons.Rounded.Public, tr("Zegary świata"), tr("Godzina w innych strefach")) { vm.select(Tab.CLOCK); vm.open(Route.ZonePicker) },
                     Tool(Icons.Rounded.Hotel, tr("Drzemka {0} min", settings.defaultSnooze), tr("Budzik liczony od teraz")) {
                         val a = Actions.nap(context, settings.defaultSnooze)
                         vm.showSnack(tr("Drzemka do {0}", Fmt.alarmTime(context, a)))

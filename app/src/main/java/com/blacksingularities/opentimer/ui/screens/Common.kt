@@ -41,6 +41,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -67,14 +68,14 @@ fun rememberNow(periodMs: Long = 1000L): Long {
     return now
 }
 
-/** Nagłówek zakładki jak w OpenPDF: duży tytuł, podtytuł i przyciski po prawej. */
+/** Nagłówek zakładki: podtytuł i przyciski po prawej (nazwę zakładki pokazuje dolny pasek). */
 @Composable
-fun TabHeader(title: String, subtitle: String?, actions: @Composable RowScope.() -> Unit = {}) {
+fun TabHeader(subtitle: String?, actions: @Composable RowScope.() -> Unit = {}) {
     Row(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        Column(Modifier.weight(1f)) {
-            Text(title, fontSize = 30.sp, fontWeight = FontWeight.Black, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            if (subtitle != null) Text(subtitle, fontSize = 13.sp, color = Palette.TextDim, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        }
+        Text(
+            subtitle.orEmpty(), fontSize = 14.sp, color = Palette.TextDim, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f),
+        )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
     }
 }
@@ -206,3 +207,69 @@ fun secLabel(s: Int): String = if (s >= 60) "%d:%02d".format(s / 60, s % 60) els
 
 @Composable
 fun Gap(h: Dp = 8.dp) = Spacer(Modifier.height(h))
+
+// Segmenty a–g cyfry siedmiosegmentowej: góra, prawa górna, prawa dolna, dół, lewa dolna, lewa górna, środek.
+private val LcdDigits = mapOf(
+    '0' to "abcdef", '1' to "bc", '2' to "abged", '3' to "abgcd", '4' to "fgbc",
+    '5' to "afgcd", '6' to "afgedc", '7' to "abc", '8' to "abcdefg", '9' to "abcdfg", '-' to "g",
+)
+
+/** Cyfry jak na wyświetlaczu ciekłokrystalicznym: pochylone segmenty z przygaszonym „8” w tle. */
+@Composable
+fun LcdText(text: String, height: Dp, modifier: Modifier = Modifier, color: Color = Color.White, maxWidth: Dp = Dp.Infinity) {
+    val digitW = 0.56f
+    val narrowW = 0.24f
+    val units = text.sumOf { (if (it == ':' || it == '.') narrowW else digitW + 0.12f).toDouble() }.toFloat()
+    // Długi tekst (np. z godzinami) zmniejsza się, żeby zmieścić się w [maxWidth].
+    val fit = if (maxWidth == Dp.Infinity) height else minOf(height, maxWidth / units)
+    Canvas(modifier.height(fit).width(fit * units)) {
+        val h = size.height
+        val t = h * 0.1f
+        val skew = 0.1f
+        val ghost = color.copy(alpha = 0.07f)
+        fun seg(x0: Float, y0: Float, x1: Float, y1: Float, col: Color) {
+            // Sześciokątny segment od (x0,y0) do (x1,y1), poziomy albo pionowy.
+            val p = Path()
+            val sk = { x: Float, y: Float -> Offset(x + (h - y) * skew, y) }
+            val pts = if (y0 == y1) listOf(
+                sk(x0, y0), sk(x0 + t / 2, y0 - t / 2), sk(x1 - t / 2, y0 - t / 2), sk(x1, y0), sk(x1 - t / 2, y0 + t / 2), sk(x0 + t / 2, y0 + t / 2),
+            ) else listOf(
+                sk(x0, y0), sk(x0 + t / 2, y0 + t / 2), sk(x0 + t / 2, y1 - t / 2), sk(x0, y1), sk(x0 - t / 2, y1 - t / 2), sk(x0 - t / 2, y0 + t / 2),
+            )
+            p.moveTo(pts[0].x, pts[0].y)
+            pts.drop(1).forEach { p.lineTo(it.x, it.y) }
+            p.close()
+            drawPath(p, col)
+        }
+        var x = 0f
+        for (ch in text) {
+            if (ch == ':' || ch == '.') {
+                val w = h * narrowW
+                val cx = x + w / 2
+                val dots = if (ch == ':') listOf(h * 0.32f, h * 0.68f) else listOf(h * 0.93f)
+                dots.forEach { y -> drawCircle(color, t * 0.6f, Offset(cx + (h - y) * skew, y)) }
+                x += w
+                continue
+            }
+            val w = h * digitW
+            val l = x + t / 2
+            val r = x + w - t / 2
+            val top = t / 2
+            val mid = h / 2
+            val bot = h - t / 2
+            val on = LcdDigits[ch].orEmpty()
+            val gap = t * 0.15f
+            val segs = mapOf(
+                'a' to floatArrayOf(l + gap, top, r - gap, top),
+                'b' to floatArrayOf(r, top + gap, r, mid - gap),
+                'c' to floatArrayOf(r, mid + gap, r, bot - gap),
+                'd' to floatArrayOf(l + gap, bot, r - gap, bot),
+                'e' to floatArrayOf(l, mid + gap, l, bot - gap),
+                'f' to floatArrayOf(l, top + gap, l, mid - gap),
+                'g' to floatArrayOf(l + gap, mid, r - gap, mid),
+            )
+            if (ch != ' ') segs.forEach { (k, v) -> seg(v[0], v[1], v[2], v[3], if (k in on) color else ghost) }
+            x += w + h * 0.12f
+        }
+    }
+}

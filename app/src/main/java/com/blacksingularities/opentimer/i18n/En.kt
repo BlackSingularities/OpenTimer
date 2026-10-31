@@ -294,6 +294,8 @@ val En: Map<String, String> = mapOf(
     "Styl zegara" to "Clock style",
     "Cyfrowy" to "Digital",
     "Analogowy" to "Analogue",
+    "Wyświetlacz LCD" to "LCD display",
+    "Zmień styl stopera" to "Change stopwatch style",
     "Cyfr." to "Digit.",
     "Analog." to "Analog.",
     "Format godziny" to "Hour format",

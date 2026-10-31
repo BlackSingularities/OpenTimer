@@ -84,9 +84,9 @@ fun ClockTab(vm: AppViewModel) {
     val settings by Store.settings.collectAsState()
     val zones by Store.zones.collectAsState()
     val alarms by Store.alarms.collectAsState()
-    val now = rememberNow(if (settings.clockStyle == ClockStyle.ANALOG) 50L else 1000L)
-    val next = TimeMath.nextOf(alarms, now)
     val localZone = ZoneId.systemDefault()
+    // Czas czytany wewnątrz pozycji listy: tyknięcie przerysowuje tylko daną pozycję,
+    // a nie całą LazyColumn – inaczej przewijanie gubi bezwładność.
 
     LazyColumn(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing),
@@ -94,16 +94,19 @@ fun ClockTab(vm: AppViewModel) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item {
-            TabHeader(tr("Zegar"), Fmt.zoneName(localZone.id, now)) {
+            val now = rememberNow(60_000L)
+            TabHeader(Fmt.zoneName(localZone.id, now)) {
                 RoundIcon(Icons.Rounded.Bedtime, tr("Zegar nocny")) { vm.open(Route.NightClock) }
                 RoundIcon(Icons.Rounded.Settings, tr("Ustawienia"), badge = if (vm.updatePending) "1" else null) { vm.open(Route.Settings) }
             }
         }
         item { UpdateBanner(vm) }
         item {
+            val now = rememberNow(if (settings.clockStyle == ClockStyle.ANALOG) 50L else 1000L)
+            val next = TimeMath.nextOf(alarms, now)
             Column(
                 Modifier.fillMaxWidth().reactive(tr("Zmień styl zegara")) {
-                    vm.settings { it.copy(clockStyle = if (it.clockStyle == ClockStyle.DIGITAL) ClockStyle.ANALOG else ClockStyle.DIGITAL) }
+                    vm.settings { it.copy(clockStyle = ClockStyle.entries[(it.clockStyle.ordinal + 1) % ClockStyle.entries.size]) }
                 }.padding(vertical = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -111,6 +114,8 @@ fun ClockTab(vm: AppViewModel) {
                     AnalogClock(now, localZone, settings.showSeconds, Modifier.widthIn(max = 300.dp).fillMaxWidth(0.78f).aspectRatio(1f))
                     Spacer(Modifier.size(12.dp))
                     Text(Fmt.time(context, now), fontSize = 22.sp, fontWeight = FontWeight.Medium)
+                } else if (settings.clockStyle == ClockStyle.LCD) {
+                    LcdTime(now, settings.showSeconds)
                 } else {
                     DigitalTime(now, settings.showSeconds)
                 }
@@ -131,11 +136,13 @@ fun ClockTab(vm: AppViewModel) {
             }
         }
         // W podróży: zegar strefy, w której aplikacja została uruchomiona pierwszy raz.
+        val listNow = System.currentTimeMillis()
         val home = settings.homeZone
             .takeIf { settings.homeClock && it.isNotBlank() && it != localZone.id }
             ?.let { id -> runCatching { ZoneId.of(id) }.getOrNull() }
-            ?.takeIf { TimeMath.zoneOffsetMinutes(it, now) != 0 }
+            ?.takeIf { TimeMath.zoneOffsetMinutes(it, listNow) != 0 }
         if (home != null) item {
+            val now = rememberNow()
             Tile(padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(38.dp).clip(RoundedCornerShape(50)).background(Color.White.copy(alpha = 0.1f)), contentAlignment = Alignment.Center) {
@@ -164,6 +171,7 @@ fun ClockTab(vm: AppViewModel) {
         }
         items(zones, key = { it }) { id ->
             val zone = runCatching { ZoneId.of(id) }.getOrNull() ?: return@items
+            val now = rememberNow()
             val diff = TimeMath.zoneOffsetMinutes(zone, now)
             val shift = TimeMath.dayShift(zone, now)
             val hour = Instant.ofEpochMilli(now).atZone(zone).hour
@@ -198,6 +206,20 @@ private fun DigitalTime(now: Long, seconds: Boolean) {
         Column(Modifier.padding(start = 6.dp, bottom = 18.dp)) {
             if (ampm != null) Text(ampm, fontSize = 16.sp, color = Palette.TextDim, fontWeight = FontWeight.Bold)
             if (seconds) Text(sec, fontSize = 26.sp, color = Palette.TextDim, fontWeight = FontWeight.Light)
+        }
+    }
+}
+
+@Composable
+private fun LcdTime(now: Long, seconds: Boolean) {
+    val context = LocalContext.current
+    val t = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault())
+    val (hm, ampm) = Fmt.hm(context, t.hour, t.minute)
+    Row(Modifier.padding(vertical = 14.dp), verticalAlignment = Alignment.Bottom) {
+        LcdText(hm.padStart(5, ' '), 76.dp)
+        Column(Modifier.padding(start = 10.dp), horizontalAlignment = Alignment.Start) {
+            if (ampm != null) Text(ampm, fontSize = 14.sp, color = Palette.TextDim, fontWeight = FontWeight.Bold)
+            if (seconds) LcdText("%02d".format(t.second), 30.dp, color = Palette.TextDim)
         }
     }
 }

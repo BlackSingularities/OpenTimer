@@ -49,6 +49,13 @@ object Store {
             _alarms.value = read("alarms") { it.objects(Alarm::fromJson) } ?: defaultAlarms()
             _timers.value = read("timers") { it.objects(TimerItem::fromJson) } ?: emptyList()
             _presets.value = read("presets") { it.objects(TimerPreset::fromJson) } ?: defaultPresets()
+            // Jednorazowo: dłuższe szybkie czasy (1 h, 1,5 h, 2 h) także dla zapisanych wcześniej list.
+            if (!prefs.getBoolean("presetsLong", false)) {
+                val list = (_presets.value + LongPresets.map { TimerPreset("", it) }).distinctBy { it.durationMs }.sortedBy { it.durationMs }
+                _presets.value = list
+                writeArray("presets", list.map { it.toJson() })
+                prefs.edit().putBoolean("presetsLong", true).apply()
+            }
             _zones.value = read("zones") { it.strings() } ?: listOf("Europe/London", "America/New_York", "Asia/Tokyo")
             _events.value = read("events") { it.objects(CountdownEvent::fromJson) } ?: emptyList()
             _intervals.value = read("intervals") { it.objects(IntervalPlan::fromJson) } ?: defaultIntervals()
@@ -154,7 +161,9 @@ object Store {
         TimerPreset("", 10 * 60_000L),
         TimerPreset("", 15 * 60_000L),
         TimerPreset("", 30 * 60_000L),
-    )
+    ) + LongPresets.map { TimerPreset("", it) }
+
+    private val LongPresets = listOf(60 * 60_000L, 90 * 60_000L, 120 * 60_000L)
 
     private fun defaultIntervals() = listOf(
         IntervalPlan("Tabata", 10, 20, 10, 8, 1, 60, 0),

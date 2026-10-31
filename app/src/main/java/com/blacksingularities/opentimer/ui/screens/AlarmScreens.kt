@@ -113,7 +113,6 @@ fun AlarmsTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
     ) {
         item {
             TabHeader(
-                tr("Budzik"),
                 if (next != null) tr("Najbliższy {0} · {1}", Fmt.dayAndTime(context, next.second), Fmt.until(next.second - now)) else tr("Brak włączonych budzików"),
             ) {
                 RoundIcon(Icons.Rounded.Add, tr("Nowy budzik")) { vm.open(Route.AlarmEditor(null)) }
@@ -140,7 +139,7 @@ fun AlarmsTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
         }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(10, 20, 30, 60).forEach { m ->
+                listOf(15, 30, 60, 120).forEach { m ->
                     Column(
                         Modifier.weight(1f).clip(RoundedCornerShape(18.dp)).background(Color.White.copy(alpha = 0.06f))
                             .reactive(tr("Drzemka {0} min", m)) {
@@ -151,7 +150,7 @@ fun AlarmsTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Icon(Icons.Rounded.Snooze, null, tint = Color.White, modifier = Modifier.size(18.dp))
-                        Text(tr("{0} min", m), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        Text(Fmt.durationShort(m * 60_000L), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }

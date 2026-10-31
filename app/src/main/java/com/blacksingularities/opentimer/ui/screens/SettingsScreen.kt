@@ -111,8 +111,8 @@ fun SettingsScreen(vm: AppViewModel, onRequestNotifications: () -> Unit) {
                 tr("Styl zegara"),
                 ClockStyle.entries,
                 s.clockStyle,
-                label = { c -> if (c == ClockStyle.DIGITAL) tr("Cyfrowy") else tr("Analogowy") },
-                short = { c -> if (c == ClockStyle.DIGITAL) tr("Cyfr.") else tr("Analog.") },
+                label = { c -> when (c) { ClockStyle.DIGITAL -> tr("Cyfrowy"); ClockStyle.ANALOG -> tr("Analogowy"); ClockStyle.LCD -> tr("Wyświetlacz LCD") } },
+                short = { c -> when (c) { ClockStyle.DIGITAL -> tr("Cyfr."); ClockStyle.ANALOG -> tr("Analog."); ClockStyle.LCD -> "LCD" } },
             ) { c -> vm.settings { it.copy(clockStyle = c) } }
             CompactChoice(
                 Icons.Rounded.Schedule,

@@ -1,5 +1,16 @@
 # Historia zmian
 
+## 1.0.4
+
+- Płynne przewijanie list w zakładkach Zegar, Stoper i Minutnik – tyknięcie zegara nie przerysowuje już całej listy, więc szybkie przeciągnięcie znów leci z bezwładnością.
+- Zakładki bez dużego tytułu – nazwę pokazuje dolny pasek.
+- Zegar: nowy styl „Wyświetlacz LCD”; dotknięcie zegara przełącza cyfrowy → analogowy → LCD.
+- Stoper: dotknięcie tarczy przełącza pierścień → tarcza analogowa (z małą tarczą minut) → LCD.
+- Szybkie budziki: 15 min, 30 min, 1 h i 2 h.
+- Minutnik: nowe szybkie czasy 1 h, 1 h 30 min i 2 h.
+- Metronom: pojedyncze kliknięcia zamiast podwójnego piknięcia (przy 1/4 brzmiało jak dwa uderzenia) i równe tempo bez zwalniania.
+- Zakładka Więcej bez zegara nocnego i zegarów świata – są w zakładce Zegar.
+
 ## 1.0.3
 
 - Poprawka: przywrócone ciemne tło interfejsu – jasne tło z 1.0.2 sprawiało, że biały tekst był nieczytelny.

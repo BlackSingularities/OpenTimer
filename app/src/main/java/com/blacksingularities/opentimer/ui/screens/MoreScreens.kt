@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Calculate
+import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Celebration
 import androidx.compose.material.icons.rounded.Coffee
 import androidx.compose.material.icons.rounded.DirectionsRun
@@ -187,6 +188,7 @@ fun AboutBlock(vm: AppViewModel) {
                 tr("Aktualizacje pobierane z {0}", AUTHOR_SITE),
             ) { vm.updateNow() }
             ActionRow(Icons.Rounded.Language, AUTHOR_SITE, tr("Pomysł i wykonanie: {0}", AUTHOR)) { uri.openUri(AUTHOR_URL) }
+            ActionRow(Icons.Rounded.Email, "kontakt@redzikowski.com", tr("Napisz do autora")) { uri.openUri("mailto:kontakt@redzikowski.com") }
             ActionRow(Icons.Rounded.Coffee, tr("Postaw kawę"), tr("Wesprzyj rozwój na buycoffee.to")) { uri.openUri(COFFEE_URL) }
         }
         Text(

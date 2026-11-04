@@ -1,5 +1,9 @@
 # Historia zmian
 
+## 1.0.8
+
+- Bez żadnych wzmianek o GitHubie w aplikacji: nowy adres serwera aktualizacji, komunikaty błędów bez nazw zewnętrznych serwerów.
+
 ## 1.0.7
 
 - Komunikat o nowej wersji bez listy zmian, linków i informacji, skąd pobierana jest aktualizacja.

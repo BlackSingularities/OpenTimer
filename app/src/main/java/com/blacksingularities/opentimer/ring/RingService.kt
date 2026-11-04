@@ -160,13 +160,20 @@ class RingService : Service(), SensorEventListener {
             player = createPlayer(uri) ?: createPlayer(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             player?.let { p ->
                 if (rampSec > 0) {
-                    p.setVolume(0.05f * target, 0.05f * target)
+                    // Słuch odbiera głośność logarytmicznie, więc rampa idzie w decybelach
+                    // (od ok. -50 dB do 0 dB), a nie liniowo w amplitudzie – inaczej po
+                    // kilku sekundach dźwięk brzmi już prawie na pełną moc.
+                    fun gain(t: Float): Float = if (t >= 1f) 1f else Math.pow(10.0, (-50.0 * (1 - t)) / 20.0).toFloat()
+                    p.setVolume(0f, 0f)
+                    val durMs = rampSec * 1000L
                     ramp = scope.launch {
-                        val steps = rampSec * 4
-                        for (i in 1..steps) {
-                            delay(250)
-                            val v = (0.05f + 0.95f * i / steps) * target
+                        val start = android.os.SystemClock.elapsedRealtime()
+                        while (true) {
+                            delay(100)
+                            val t = ((android.os.SystemClock.elapsedRealtime() - start).toFloat() / durMs).coerceAtMost(1f)
+                            val v = gain(t) * target
                             runCatching { p.setVolume(v, v) }
+                            if (t >= 1f) break
                         }
                     }
                 } else {

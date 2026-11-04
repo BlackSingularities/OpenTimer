@@ -1,5 +1,9 @@
 # Historia zmian
 
+## 1.0.6
+
+- Narastanie głośności budzika i minutnika działa naprawdę stopniowo: dźwięk startuje od ciszy i rośnie w skali odczuwalnej przez ucho przez cały ustawiony czas, zamiast osiągać prawie pełną głośność po kilku sekundach.
+
 ## 1.0.5
 
 - Nagłówki zakładek Zegar i Budzik mają ten sam rozmiar i odstęp co pozostałe zakładki.

@@ -41,7 +41,7 @@ class UpdatesTest {
         assertEquals("1.2.3", info.version)
         assertEquals("https://example.com/app.apk", info.assetUrl)
         assertEquals(1234L, info.sizeBytes)
-        assertEquals("Nowości", info.notes)
+        assertEquals("", info.notes)
     }
 
     @Test(expected = IllegalStateException::class)

@@ -46,10 +46,10 @@ fun parseRelease(json: String, assetSuffix: String = ".apk"): ReleaseInfo {
     if (url.isEmpty()) error(tr("Wydanie nie zawiera pliku {0}", assetSuffix.removePrefix(".").uppercase()))
     return ReleaseInfo(
         version = o.optString("tag_name").removePrefix("v"),
-        notes = o.optString("body").substringBefore("\n---").trim(),
+        notes = "",
         assetUrl = url,
         sizeBytes = size,
-        pageUrl = o.optString("html_url"),
+        pageUrl = "",
     )
 }
 

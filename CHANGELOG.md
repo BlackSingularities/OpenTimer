@@ -1,5 +1,9 @@
 # Historia zmian
 
+## 1.0.7
+
+- Komunikat o nowej wersji bez listy zmian, linków i informacji, skąd pobierana jest aktualizacja.
+
 ## 1.0.6
 
 - Narastanie głośności budzika i minutnika działa naprawdę stopniowo: dźwięk startuje od ciszy i rośnie w skali odczuwalnej przez ucho przez cały ustawiony czas, zamiast osiągać prawie pełną głośność po kilku sekundach.

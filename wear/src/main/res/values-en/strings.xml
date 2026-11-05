@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="timer">Timer</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="stop">Stop</string>
+    <string name="plus_minute">+1 min</string>
+    <string name="minutes">%d min</string>
+    <string name="time_up">Time\'s up</string>
+    <string name="channel">Timer</string>
+    <string name="running">Counting down</string>
+</resources>

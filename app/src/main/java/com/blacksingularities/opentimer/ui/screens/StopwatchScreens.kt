@@ -1,5 +1,7 @@
 package com.blacksingularities.opentimer.ui.screens
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -112,7 +114,7 @@ fun StopwatchTab(vm: AppViewModel) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             TimeMath.clock(elapsed, centis = settings.stopwatchMs),
-                            fontSize = if (settings.stopwatchMs) 38.sp else 44.sp,
+                            fontSize = capped(if (settings.stopwatchMs) 38.sp else 44.sp),
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Light,
                             color = Color.White,
@@ -229,7 +231,7 @@ fun lapReport(elapsed: Long, laps: List<Long>): String = buildString {
 /** Tarcza stopera: wskazówka sekundowa na 60 s, mała tarcza minut (30 min) i znacznik ostatniego okrążenia. */
 @Composable
 private fun StopwatchDial(elapsed: Long, lastLap: Long?, modifier: Modifier = Modifier) {
-    Canvas(modifier) {
+    Canvas(modifier.semantics { contentDescription = TimeMath.clock(elapsed, centis = false) }) {
         val r = size.minDimension / 2
         val c = Offset(size.width / 2, size.height / 2)
         fun at(turns: Float, len: Float, center: Offset = c, radius: Float = r): Offset {

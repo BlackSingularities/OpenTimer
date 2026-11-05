@@ -1,5 +1,12 @@
 # Historia zmian
 
+## 1.1.0
+
+- Nowe widżety: „Odliczanie” (najbliższy minutnik albo stoper z przyciskiem pauzy) i „Budziki” (do czterech najbliższych budzików).
+- Android 16: trwające minutniki, stoper, pomodoro i drzemka jako Live Update – chip z czasem na pasku stanu i ekranie blokady.
+- Dostępność: opisy dla TalkBacka (tarcze zegara i stopera, cyfry LCD, przełączniki budzików, nagłówki sekcji), przełączniki i wybory ogłaszane z rolą i stanem, wielkie cyfry nie wychodzą poza ekran przy powiększonej czcionce.
+- Aplikacja na Wear OS: minutnik z szybkimi czasami i wibracją po czasie oraz stoper – plik OpenTimer-Wear w wydaniu.
+
 ## 1.0.8
 
 - Bez żadnych wzmianek o GitHubie w aplikacji: nowy adres serwera aktualizacji, komunikaty błędów bez nazw zewnętrznych serwerów.

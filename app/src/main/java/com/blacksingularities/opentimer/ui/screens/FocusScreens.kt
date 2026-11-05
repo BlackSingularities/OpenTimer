@@ -91,7 +91,7 @@ fun PomodoroScreen(vm: AppViewModel) {
                     Text(Fmt.phase(p.phase).uppercase(), fontSize = 11.sp, letterSpacing = 1.4.sp, color = Palette.TextDim, fontWeight = FontWeight.Bold)
                     Text(
                         TimeMath.countdown(left),
-                        fontSize = 46.sp,
+                        fontSize = capped(46.sp),
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Light,
                     )
@@ -231,7 +231,7 @@ fun IntervalScreen(vm: AppViewModel) {
                     Text((step?.let { kindLabel(it.kind) } ?: tr("Gotowy")).uppercase(), fontSize = 11.sp, letterSpacing = 1.4.sp, color = Palette.TextDim, fontWeight = FontWeight.Bold)
                     Text(
                         TimeMath.countdown(leftMs),
-                        fontSize = 46.sp,
+                        fontSize = capped(46.sp),
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Light,
                     )

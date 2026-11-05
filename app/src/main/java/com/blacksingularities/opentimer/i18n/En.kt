@@ -414,4 +414,8 @@ val En: Map<String, String> = mapOf(
     "Tu jest mój dom" to "This is my home",
     "Ustaw obecną strefę jako domową" to "Make the current zone the home one",
     "Dom: {0}" to "Home: {0}",
+    "Brak odliczania" to "No countdown",
+    "Wstrzymany" to "Paused",
+    "Brak włączonych budzików" to "No alarms on",
+    "Dotknij, aby ustawić minutnik" to "Tap to set a timer",
 )

@@ -2,6 +2,10 @@
 <resources>
     <string name="widget_clock">OpenTimer clock</string>
     <string name="widget_clock_desc">Time, date and the next alarm</string>
+    <string name="widget_countdown">OpenTimer countdown</string>
+    <string name="widget_countdown_desc">The nearest timer or the stopwatch with pause</string>
+    <string name="widget_alarms">OpenTimer alarms</string>
+    <string name="widget_alarms_desc">A list of upcoming alarms</string>
     <string name="shortcut_alarm">New alarm</string>
     <string name="shortcut_timer">Timer</string>
     <string name="shortcut_stopwatch">Stopwatch</string>

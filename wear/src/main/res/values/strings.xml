@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">OpenTimer</string>
+    <string name="timer">Minutnik</string>
+    <string name="stopwatch">Stoper</string>
+    <string name="start">Start</string>
+    <string name="pause">Pauza</string>
+    <string name="resume">Wznów</string>
+    <string name="cancel">Anuluj</string>
+    <string name="reset">Zeruj</string>
+    <string name="stop">Wyłącz</string>
+    <string name="plus_minute">+1 min</string>
+    <string name="minutes">%d min</string>
+    <string name="time_up">Czas minął</string>
+    <string name="channel">Minutnik</string>
+    <string name="running">Odliczanie</string>
+</resources>

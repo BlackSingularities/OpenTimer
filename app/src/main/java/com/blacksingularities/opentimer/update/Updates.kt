@@ -36,7 +36,7 @@ fun parseRelease(json: String, assetSuffix: String = ".apk"): ReleaseInfo {
     if (assets != null) {
         for (i in 0 until assets.length()) {
             val a = assets.optJSONObject(i) ?: continue
-            if (a.optString("name").endsWith(assetSuffix)) {
+            if (a.optString("name").endsWith(assetSuffix) && !a.optString("name").contains("Wear", ignoreCase = true)) {
                 url = a.optString("browser_download_url")
                 size = a.optLong("size")
                 break

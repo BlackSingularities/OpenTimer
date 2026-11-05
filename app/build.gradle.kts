@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId = "com.blacksingularities.opentimer"
         minSdk = 29
-        targetSdk = 35
+        targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName
         vectorDrawables.useSupportLibrary = true

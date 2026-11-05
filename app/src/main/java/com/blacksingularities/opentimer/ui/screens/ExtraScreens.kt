@@ -236,7 +236,7 @@ fun MetronomeScreen(vm: AppViewModel) {
     SubScreen(tr("Metronom"), onBack = { vm.back() }) {
         Box(Modifier.fillMaxWidth().padding(top = 8.dp), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("$bpm", fontSize = 72.sp, fontWeight = FontWeight.Thin, fontFamily = FontFamily.Monospace)
+                Text("$bpm", fontSize = capped(72.sp), fontWeight = FontWeight.Thin, fontFamily = FontFamily.Monospace)
                 Text(tr("uderzeń na minutę · {0}", tempoName(bpm)), fontSize = 12.sp, color = Palette.TextDim)
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     repeat(meter) { i ->

@@ -104,7 +104,7 @@ fun TimersTab(vm: AppViewModel, onRequestNotifications: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
                     TimeMath.clock(typed, forceHours = true),
-                    fontSize = 46.sp,
+                    fontSize = capped(46.sp),
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Light,
                     color = if (typed > 0) Color.White else Palette.TextFaint,
@@ -250,7 +250,7 @@ private fun TimerCard(vm: AppViewModel, timer: TimerItem, single: Boolean, onRen
                 ) {
                     Text(
                         TimeMath.countdown(left),
-                        fontSize = 40.sp,
+                        fontSize = capped(40.sp),
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Light,
                         color = Color.White,

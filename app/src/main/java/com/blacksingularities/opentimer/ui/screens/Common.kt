@@ -49,6 +49,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.runtime.ReadOnlyComposable
 import com.blacksingularities.opentimer.i18n.tr
 import com.blacksingularities.opentimer.ui.components.RoundIcon
 import com.blacksingularities.opentimer.ui.theme.Palette
@@ -147,7 +153,7 @@ fun Tile(modifier: Modifier = Modifier, active: Boolean = false, padding: Paddin
 /** Nagłówek sekcji wielkimi literami. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier) {
-    Text(text.uppercase(), color = Palette.Amber, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp, modifier = modifier.padding(start = 4.dp, top = 4.dp))
+    Text(text.uppercase(), color = Palette.Amber, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp, modifier = modifier.padding(start = 4.dp, top = 4.dp).semantics { heading() })
 }
 
 /** Pierścień postępu z treścią w środku. */
@@ -205,6 +211,16 @@ fun Stepper(
 /** Sekundy jako „0:45”, „2:00”. */
 fun secLabel(s: Int): String = if (s >= 60) "%d:%02d".format(s / 60, s % 60) else "$s s"
 
+/**
+ * Rozmiar wielkich cyfr: rośnie razem z czcionką systemową najwyżej [max] razy, żeby zegar
+ * i odliczanie mieściły się w ekranie także przy największym powiększeniu tekstu.
+ */
+@Composable
+@ReadOnlyComposable
+fun capped(size: TextUnit, max: Float = 1.2f): TextUnit = with(LocalDensity.current) {
+    if (size.toDp().value <= size.value * max) size else (size.value * max).dp.toSp()
+}
+
 @Composable
 fun Gap(h: Dp = 8.dp) = Spacer(Modifier.height(h))
 
@@ -222,7 +238,7 @@ fun LcdText(text: String, height: Dp, modifier: Modifier = Modifier, color: Colo
     val units = text.sumOf { (if (it == ':' || it == '.') narrowW else digitW + 0.12f).toDouble() }.toFloat()
     // Długi tekst (np. z godzinami) zmniejsza się, żeby zmieścić się w [maxWidth].
     val fit = if (maxWidth == Dp.Infinity) height else minOf(height, maxWidth / units)
-    Canvas(modifier.height(fit).width(fit * units)) {
+    Canvas(modifier.height(fit).width(fit * units).semantics { contentDescription = text.trim() }) {
         val h = size.height
         val t = h * 0.1f
         val skew = 0.1f

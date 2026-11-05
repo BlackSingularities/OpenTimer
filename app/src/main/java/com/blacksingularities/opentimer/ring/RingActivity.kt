@@ -1,5 +1,6 @@
 package com.blacksingularities.opentimer.ring
 
+import com.blacksingularities.opentimer.ui.screens.capped
 import android.app.KeyguardManager
 import android.os.Bundle
 import android.view.KeyEvent
@@ -152,7 +153,7 @@ private fun RingScreen(st: RingState) {
                 Icon(if (alarm != null) Icons.Rounded.Alarm else Icons.Rounded.HourglassBottom, null, tint = Color.White, modifier = Modifier.size(48.dp))
             }
             Spacer(Modifier.height(24.dp))
-            Text(Fmt.time(context, now), fontSize = 76.sp, fontWeight = FontWeight.Light, color = Color.White)
+            Text(Fmt.time(context, now), fontSize = capped(76.sp), fontWeight = FontWeight.Light, color = Color.White)
             Text(Fmt.date(now), fontSize = 15.sp, color = Palette.TextDim)
             Spacer(Modifier.height(20.dp))
             if (alarm != null) {
@@ -246,11 +247,11 @@ private fun Challenge(alarm: Alarm, onSolved: () -> Unit, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(tr("Zadanie {0} z {1}", solved + 1, total), color = Palette.TextDim, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
-        Text(task.first, fontSize = 40.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+        Text(task.first, fontSize = capped(40.sp), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
         Spacer(Modifier.height(12.dp))
         Text(
             input.ifEmpty { "?" },
-            fontSize = 44.sp,
+            fontSize = capped(44.sp),
             fontWeight = FontWeight.Light,
             color = if (wrong) Palette.Record else Color.White,
         )

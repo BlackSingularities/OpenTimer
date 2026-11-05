@@ -55,6 +55,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -174,7 +177,7 @@ fun Group(
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.4.sp,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).semantics { heading() },
             )
             if (collapsible) {
                 Icon(
@@ -216,7 +219,7 @@ fun SwitchRow(icon: ImageVector, title: String, subtitle: String?, value: Boolea
     Row(
         Modifier
             .fillMaxWidth()
-            .clickable(enabled = enabled) { onChange(!value) }
+            .toggleable(value = value, enabled = enabled, role = Role.Switch, onValueChange = onChange)
             .padding(horizontal = 10.dp, vertical = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -227,7 +230,7 @@ fun SwitchRow(icon: ImageVector, title: String, subtitle: String?, value: Boolea
         }
         Switch(
             checked = value,
-            onCheckedChange = onChange,
+            onCheckedChange = null,
             enabled = enabled,
             modifier = Modifier.scale(0.82f),
             colors = SwitchDefaults.colors(checkedTrackColor = Palette.Amber, checkedThumbColor = Palette.Ink),
@@ -328,7 +331,7 @@ fun <T> Chips(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50))
                         .background(if (sel) Palette.Amber else Color.White.copy(alpha = 0.07f))
-                        .clickable(enabled = enabled) { onSelect(o) }
+                        .selectable(selected = sel, enabled = enabled, role = Role.RadioButton) { onSelect(o) }
                         .padding(horizontal = 11.dp, vertical = 6.dp),
                 )
             }
@@ -351,7 +354,7 @@ fun ActionRow(
     Row(
         Modifier
             .fillMaxWidth()
-            .clickable(enabled = enabled, onClick = onClick)
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -404,7 +407,7 @@ fun PillButton(text: String, modifier: Modifier = Modifier, primary: Boolean = t
         modifier
             .clip(RoundedCornerShape(50))
             .background(bg)
-            .clickable(enabled = enabled, onClick = onClick)
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .padding(horizontal = 18.dp, vertical = 10.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -507,7 +510,7 @@ fun ColorDot(color: Int, selected: Boolean, size: Dp = 30.dp, onClick: () -> Uni
             .size(size)
             .clip(CircleShape)
             .background(if (selected) Color.White else Color.White.copy(alpha = 0.12f))
-            .clickable(onClick = onClick)
+            .selectable(selected = selected, role = Role.RadioButton, onClick = onClick)
             .padding(if (selected) 3.dp else 2.dp)
             .clip(CircleShape)
             .background(Color(color)),

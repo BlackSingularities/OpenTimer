@@ -9,7 +9,9 @@ import com.blacksingularities.opentimer.data.PomodoroPhase
 import com.blacksingularities.opentimer.data.Store
 import com.blacksingularities.opentimer.data.TimerItem
 import com.blacksingularities.opentimer.notify.Notifications
+import com.blacksingularities.opentimer.widget.AlarmsWidget
 import com.blacksingularities.opentimer.widget.ClockWidget
+import com.blacksingularities.opentimer.widget.CountdownWidget
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -22,6 +24,8 @@ object Actions {
         Scheduler.sync(context)
         Notifications.refresh(context)
         ClockWidget.refresh(context)
+        CountdownWidget.refresh(context)
+        AlarmsWidget.refresh(context)
     }
 
     /** Po zmianie ustawień, strefy czasowej, restarcie telefonu. */

@@ -3,6 +3,10 @@
     <string name="app_name" translatable="false">OpenTimer</string>
     <string name="widget_clock">Zegar OpenTimer</string>
     <string name="widget_clock_desc">Godzina, data i najbliższy budzik</string>
+    <string name="widget_countdown">Odliczanie OpenTimer</string>
+    <string name="widget_countdown_desc">Najbliższy minutnik albo stoper z pauzą</string>
+    <string name="widget_alarms">Budziki OpenTimer</string>
+    <string name="widget_alarms_desc">Lista najbliższych budzików</string>
     <string name="shortcut_alarm">Nowy budzik</string>
     <string name="shortcut_timer">Minutnik</string>
     <string name="shortcut_stopwatch">Stoper</string>

@@ -57,10 +57,14 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-        run: gradle :app:assembleRelease -PrequireSigning=true -PversionCode=${{ steps.ver.outputs.code }} -PversionName=${{ steps.ver.outputs.name }} --stacktrace
+        run: gradle :app:assembleRelease :wear:assembleRelease -PrequireSigning=true -PversionCode=${{ steps.ver.outputs.code }} -PversionName=${{ steps.ver.outputs.name }} --stacktrace
 
       - name: Przygotowanie pliku
-        run: cp app/build/outputs/apk/release/app-release.apk "OpenTimer-${{ steps.ver.outputs.name }}.apk"
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk "OpenTimer-${{ steps.ver.outputs.name }}.apk"
+          # Aplikacja na zegarek w ZIP-ie: aktualizator w telefonie pobiera pierwszy plik .apk z wydania.
+          cp wear/build/outputs/apk/release/wear-release.apk "OpenTimer-Wear-${{ steps.ver.outputs.name }}.apk"
+          zip -j "OpenTimer-Wear-${{ steps.ver.outputs.name }}.zip" "OpenTimer-Wear-${{ steps.ver.outputs.name }}.apk"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -79,8 +83,8 @@ jobs:
             LOG=$(git log -5 --pretty='- %s' "$GITHUB_SHA")
             NOTES=$(printf 'Poprawki i ulepszenia:\n\n%s' "$LOG")
           fi
-          FOOTER=$(printf -- '---\n**Android:** pobierz **OpenTimer-%s.apk** i zainstaluj go na telefonie (Android 10+). Kolejne wersje aplikacja pobierze i zainstaluje sama.' "$NAME")
-          gh release create "$TAG" "OpenTimer-$NAME.apk" \
+          FOOTER=$(printf -- '---\n**Android:** pobierz **OpenTimer-%s.apk** i zainstaluj go na telefonie (Android 10+). Kolejne wersje aplikacja pobierze i zainstaluje sama.\n**Wear OS:** rozpakuj **OpenTimer-Wear-%s.zip** i zainstaluj APK na zegarku przez adb (Wear OS 3+).' "$NAME" "$NAME")
+          gh release create "$TAG" "OpenTimer-$NAME.apk" "OpenTimer-Wear-$NAME.zip" \
             --target "$GITHUB_SHA" \
             --title "OpenTimer $NAME" \
             --notes "$(printf '%s\n\n%s' "$NOTES" "$FOOTER")" \

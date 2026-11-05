@@ -1,5 +1,7 @@
 package com.blacksingularities.opentimer.ui.screens
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import android.app.Activity
 import android.view.WindowManager
 import androidx.compose.foundation.Canvas
@@ -202,7 +204,7 @@ private fun DigitalTime(now: Long, seconds: Boolean) {
     val (hm, ampm) = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).let { Fmt.hm(context, it.hour, it.minute) }
     val sec = "%02d".format(Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).second)
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(hm, fontSize = 84.sp, fontWeight = FontWeight.Thin, color = Color.White)
+        Text(hm, fontSize = capped(84.sp), fontWeight = FontWeight.Thin, color = Color.White)
         Column(Modifier.padding(start = 6.dp, bottom = 18.dp)) {
             if (ampm != null) Text(ampm, fontSize = 16.sp, color = Palette.TextDim, fontWeight = FontWeight.Bold)
             if (seconds) Text(sec, fontSize = 26.sp, color = Palette.TextDim, fontWeight = FontWeight.Light)
@@ -231,7 +233,7 @@ fun AnalogClock(now: Long, zone: ZoneId, seconds: Boolean, modifier: Modifier = 
     val s = t.second + t.nano / 1e9f
     val m = t.minute + s / 60f
     val h = t.hour % 12 + m / 60f
-    Canvas(modifier) {
+    Canvas(modifier.semantics { contentDescription = "%d:%02d".format(t.hour, t.minute) }) {
         val r = size.minDimension / 2
         val c = Offset(size.width / 2, size.height / 2)
         drawCircle(color.copy(alpha = 0.06f), r, c)
@@ -347,7 +349,7 @@ fun NightClockScreen(vm: AppViewModel) {
             Modifier.offset { IntOffset((dx * density).roundToInt(), (dy * density).roundToInt()) },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(Fmt.time(context, now, seconds = settings.nightSeconds), fontSize = 96.sp, fontWeight = FontWeight.Thin, color = color, textAlign = TextAlign.Center)
+            Text(Fmt.time(context, now, seconds = settings.nightSeconds), fontSize = capped(96.sp, 1f), fontWeight = FontWeight.Thin, color = color, textAlign = TextAlign.Center)
             Text(Fmt.date(now), fontSize = 18.sp, color = color.copy(alpha = color.alpha * 0.7f))
             if (next != null) Text("⏰ " + Fmt.dayAndTime(context, next.second), fontSize = 16.sp, color = color.copy(alpha = color.alpha * 0.7f), modifier = Modifier.padding(top = 6.dp))
         }

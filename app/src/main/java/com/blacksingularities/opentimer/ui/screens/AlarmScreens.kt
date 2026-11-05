@@ -1,5 +1,8 @@
 package com.blacksingularities.opentimer.ui.screens
 
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
@@ -199,7 +202,7 @@ private fun AlarmCard(vm: AppViewModel, a: Alarm, now: Long) {
             Column(Modifier.weight(1f)) {
                 if (a.label.isNotBlank()) Text(a.label, fontSize = 13.sp, color = Palette.TextDim, maxLines = 1)
                 Row(verticalAlignment = Alignment.Bottom) {
-                    Text(time, fontSize = 44.sp, fontWeight = FontWeight.Light, color = dim)
+                    Text(time, fontSize = capped(44.sp), fontWeight = FontWeight.Light, color = dim)
                     if (ampm != null) Text(ampm, fontSize = 14.sp, color = dim, modifier = Modifier.padding(start = 4.dp, bottom = 9.dp))
                 }
                 Text(
@@ -219,13 +222,15 @@ private fun AlarmCard(vm: AppViewModel, a: Alarm, now: Long) {
                     }
                 },
                 colors = SwitchDefaults.colors(checkedTrackColor = Color.White, checkedThumbColor = Palette.Ink),
+                modifier = Modifier.semantics { contentDescription = tr("Budzik {0}", listOfNotNull(time, ampm).joinToString(" ")) },
             )
         }
         Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
             Fmt.weekOrder().forEach { d ->
                 val on = a.repeatsOn(d.value)
                 Box(
-                    Modifier.size(28.dp).clip(CircleShape).background(if (on) Color.White.copy(alpha = if (a.enabled) 1f else 0.4f) else Color.Transparent),
+                    Modifier.size(28.dp).clip(CircleShape).background(if (on) Color.White.copy(alpha = if (a.enabled) 1f else 0.4f) else Color.Transparent)
+                        .clearAndSetSemantics { },
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(Fmt.dayLetter(d), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (on) Palette.Ink else Palette.TextFaint)

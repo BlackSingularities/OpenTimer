@@ -98,6 +98,19 @@ object Notifications {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
     )
 
+    /**
+     * Android 16: prośba o „Live Update” – trwające odliczanie jako chip z czasem na pasku stanu
+     * i na ekranie blokady. Starsze systemy ignorują ten dodatek.
+     */
+    private fun Notification.Builder.live(on: Boolean = true): Notification.Builder {
+        if (on && Build.VERSION.SDK_INT >= 36) {
+            addExtras(android.os.Bundle().apply { putBoolean(EXTRA_PROMOTED, true) })
+        }
+        return this
+    }
+
+    private const val EXTRA_PROMOTED = "android.requestPromotedOngoing"
+
     private fun act(context: Context, icon: Int, title: String, pi: PendingIntent) =
         Notification.Action.Builder(android.graphics.drawable.Icon.createWithResource(context, icon), title, pi).build()
 
@@ -123,6 +136,7 @@ object Notifications {
                 .setGroup(GROUP_TIMERS)
                 .setContentIntent(openApp(context, "timers", 10 + t.id))
                 .setSortKey("%015d".format(t.remainingAt(now)))
+                .live(t.running)
             if (t.running) {
                 b.setWhen(t.endAt).setUsesChronometer(true).setChronometerCountDown(true).setShowWhen(true)
                 b.setContentText(tr("Zadzwoni o {0}", Fmt.time(context, t.endAt)))
@@ -149,6 +163,7 @@ object Notifications {
                 .setOnlyAlertOnce(true)
                 .setCategory(Notification.CATEGORY_STOPWATCH)
                 .setContentIntent(openApp(context, "stopwatch", 3))
+                .live(sw.running)
             if (sw.running) {
                 b.setWhen(now - elapsed).setUsesChronometer(true).setShowWhen(true)
                 b.setContentText(if (sw.laps.isEmpty()) tr("Odmierzanie") else tr("Okrążenie {0}", sw.laps.size + 1))
@@ -173,6 +188,7 @@ object Notifications {
                 .setOngoing(p.running)
                 .setOnlyAlertOnce(true)
                 .setContentIntent(openApp(context, "pomodoro", 4))
+                .live(p.running)
             if (p.running) {
                 b.setWhen(p.endAt).setUsesChronometer(true).setChronometerCountDown(true).setShowWhen(true)
                 b.setContentText(tr("Sesja {0} · dziś ukończono {1}", p.cycle + 1, p.doneToday))
@@ -196,6 +212,7 @@ object Notifications {
                 .setOngoing(true)
                 .setWhen(a.snoozedUntil).setUsesChronometer(true).setChronometerCountDown(true).setShowWhen(true)
                 .setContentIntent(openApp(context, "alarms", 5))
+                .live()
                 .addAction(act(context, R.drawable.ic_stat_alarm, tr("Wyłącz"), action(context, ActionReceiver.ALARM_END_SNOOZE, a.id, 70_000 + a.id)))
             runCatching { nm.notify(ID_SNOOZE + a.id, b.build()) }
         }

@@ -1,5 +1,10 @@
 # Historia zmian
 
+## 1.2.0
+
+- Zgłaszanie błędów i sugestii: nowa pozycja „Zgłoś błąd lub sugestię” – opis trafia prosto do autora przez redzikowski.com, e-mail jest opcjonalny.
+- Po nieoczekiwanym zamknięciu aplikacja przy następnym uruchomieniu proponuje wysłanie raportu o błędzie – tylko za zgodą użytkownika.
+
 ## 1.1.0
 
 - Nowe widżety: „Odliczanie” (najbliższy minutnik albo stoper z przyciskiem pauzy) i „Budziki” (do czterech najbliższych budzików).

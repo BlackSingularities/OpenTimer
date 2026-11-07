@@ -418,4 +418,6 @@ val En: Map<String, String> = mapOf(
     "Wstrzymany" to "Paused",
     "Brak włączonych budzików" to "No alarms on",
     "Dotknij, aby ustawić minutnik" to "Tap to set a timer",
+    "Zgłoś błąd lub sugestię" to "Report a bug or suggestion",
+    "Wiadomość trafia prosto do autora" to "Goes straight to the developer",
 )

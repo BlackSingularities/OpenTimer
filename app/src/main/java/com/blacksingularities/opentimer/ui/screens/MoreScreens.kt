@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Calculate
 import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Celebration
 import androidx.compose.material.icons.rounded.Coffee
 import androidx.compose.material.icons.rounded.DirectionsRun
@@ -189,6 +190,9 @@ fun AboutBlock(vm: AppViewModel) {
             ) { vm.updateNow() }
             ActionRow(Icons.Rounded.Language, AUTHOR_SITE, tr("Pomysł i wykonanie: {0}", AUTHOR)) { uri.openUri(AUTHOR_URL) }
             ActionRow(Icons.Rounded.Email, "kontakt@redzikowski.com", tr("Napisz do autora")) { uri.openUri("mailto:kontakt@redzikowski.com") }
+            com.blacksingularities.opentimer.feedback.FeedbackEntry { open ->
+                ActionRow(Icons.Rounded.BugReport, tr("Zgłoś błąd lub sugestię"), tr("Wiadomość trafia prosto do autora")) { open() }
+            }
             ActionRow(Icons.Rounded.Coffee, tr("Postaw kawę"), tr("Wesprzyj rozwój na buycoffee.to")) { uri.openUri(COFFEE_URL) }
         }
         Text(

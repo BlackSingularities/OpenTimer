@@ -1,5 +1,7 @@
 package com.blacksingularities.opentimer
 
+import com.blacksingularities.opentimer.feedback.Feedback
+import com.blacksingularities.opentimer.feedback.CrashReportPrompt
 import android.Manifest
 import android.content.Intent
 import android.os.Build
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Feedback.install(this, "opentimer")
         enableEdgeToEdge()
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         UpdateManager.clearUpdatedNotification(this)
@@ -36,6 +39,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             OpenTimerTheme {
+                CrashReportPrompt()
                 AppRoot(vm, onRequestNotifications = ::requestNotifications)
             }
         }

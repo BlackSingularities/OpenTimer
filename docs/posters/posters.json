@@ -1,0 +1,23 @@
+{
+  "slug": "opentimer",
+  "name": "OpenTimer",
+  "label": "zegar · budzik · stoper · minutnik",
+  "icon": "icon.png",
+  "url": "https://redzikowski.com/portfolio/opentimer",
+  "posters": [
+    {
+      "platform": "android",
+      "file": "android.png",
+      "title": "Cały czas w *jednej aplikacji*",
+      "lead": "Zegary świata, budziki z drzemką, stoper z okrążeniami, kilka minutników naraz i kalkulator czasu.",
+      "shots": [
+        { "src": "../screenshots/android/01-zegar.png", "caption": "Zegar" },
+        { "src": "../screenshots/android/02-budzik.png", "caption": "Budzik" },
+        { "src": "../screenshots/android/03-stoper.png", "caption": "Stoper" },
+        { "src": "../screenshots/android/04-minutnik.png", "caption": "Minutnik" }
+      ],
+      "features": ["zegary świata", "budziki z dniami tygodnia", "okrążenia stopera", "kilka minutników naraz", "trening interwałowy", "kalkulator czasu"],
+      "meta": "Android 10 lub nowszy"
+    }
+  ]
+}

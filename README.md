@@ -1,5 +1,13 @@
 # OpenTimer
 
+<!-- posters:start -->
+<p align="center">
+  <img src="docs/posters/android.png" alt="OpenTimer – Android" width="460">
+</p>
+
+<p align="center"><a href="https://redzikowski.com/portfolio/opentimer">redzikowski.com/portfolio/opentimer</a></p>
+<!-- posters:end -->
+
 <img src="artwork/app-icon.png" alt="OpenTimer" width="128" />
 
 Zegar, budzik, stoper, minutnik i narzędzia czasu w jednej aplikacji na Androida. Czarny interfejs
